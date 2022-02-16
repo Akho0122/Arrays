@@ -303,14 +303,24 @@ console.log(accounts);
 // calcAverageHumanAge([5, 2, 4, 1, 15, 8, 3]);
 // calcAverageHumanAge([16, 6, 10, 5, 6, 1, 4]);
 
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
-const euroToUsd = 1.1;
-const totalDepositsUSD = movements
-  .filter(mov => mov > 0)
-  // .map(mov => mov * euroToUsd)
-  .map((mov, i, arr) => {
-    // console.log(arr);
-    return mov * euroToUsd;
-  })
-  .reduce((acc, cur) => acc + cur, 0);
-console.log(totalDepositsUSD);
+// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+// const euroToUsd = 1.1;
+// const totalDepositsUSD = movements
+//   .filter(mov => mov > 0)
+//   // .map(mov => mov * euroToUsd)
+//   .map((mov, i, arr) => {
+//     // console.log(arr);
+//     return mov * euroToUsd;
+//   })
+//   .reduce((acc, cur) => acc + cur, 0);
+// console.log(totalDepositsUSD);
+
+const calcAverageHumanAge = ages => {
+  ages
+    .map(age => (age <= 2 ? 2 * age : 16 + age * 4))
+    .filter(age => age >= 18)
+    .reduce((acc, age, i, arr) => acc + age / arr.length, 0);
+  console.log(ages);
+};
+calcAverageHumanAge([5, 2, 4, 1, 15, 8, 3]);
+calcAverageHumanAge([16, 6, 10, 5, 6, 1, 4]);
