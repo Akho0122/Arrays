@@ -76,9 +76,32 @@ displayMovements(account1.movements);
 
 const calcDisplayBalance = function (movements) {
   const balance = movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${balance} €`;
+  labelBalance.textContent = `${balance}€`;
 };
 calcDisplayBalance(account1.movements);
+
+const calcDisplaySummary = function (movements) {
+  const incomes = movements
+    .filter(mov => mov > 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumIn.textContent = `${incomes}€`;
+
+  const out = movements
+    .filter(mov => mov < 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumOut.textContent = `${Math.abs(out)}€`;
+
+  const interest = movements
+    .filter(mov => mov > 0)
+    .map(deposit => (deposit * 1.2) / 100)
+    .filter((int, i, arr) => {
+      console.log(arr);
+      return int >= 1;
+    })
+    .reduce((acc, int) => acc + int, 0);
+  labelSumInterest.textContent = `${interest}€`;
+};
+calcDisplaySummary(account1.movements);
 
 const createUsernames = function (accs) {
   accs.forEach(function (acc) {
@@ -229,53 +252,65 @@ console.log(accounts);
 // );
 // console.log(movementsDescriptions);
 
+// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+// const deposits = movements.filter(function (mov) {
+//   return mov > 0;
+// });
+// console.log(deposits);
+
+// const depositFor = [];
+// for (const mov of movements) {
+//   if (mov >= 0) {
+//     depositFor.push(mov);
+//   }
+// }
+// console.log(depositFor);
+
+// const withdrawals = movements.filter(mov => mov < 0);
+// console.log(withdrawals);
+
+// const balance = movements.reduce(function (acc, cur, i, arr) {
+//   console.log(`Iteration ${i}: ${acc}`);
+//   return acc + cur;
+// }, 0);
+// console.log(balance);
+
+// const balance1 = movements.reduce((acc, cur) => acc + cur, 0);
+// console.log(balance1);
+
+// let balance2 = 0;
+// for (const mov of movements) {
+//   balance2 += mov;
+// }
+// console.log(balance2);
+
+// const max = movements.reduce((acc, mov) => {
+//   if (acc > mov) {
+//     return acc;
+//   } else {
+//     return mov;
+//   }
+// }, movements[0]);
+// console.log(max);
+
+// const calcAverageHumanAge = function (ages) {
+//   const humanAges = ages.map(age => (age <= 2 ? 2 * age : 16 + age * 4));
+//   const adults = humanAges.filter(age => age >= 18);
+//   const average = adults.reduce((acc, cur) => acc + cur, 0) / adults.length;
+//   return average;
+// };
+// calcAverageHumanAge([5, 2, 4, 1, 15, 8, 3]);
+// calcAverageHumanAge([16, 6, 10, 5, 6, 1, 4]);
+
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
-
-const deposits = movements.filter(function (mov) {
-  return mov > 0;
-});
-console.log(deposits);
-
-const depositFor = [];
-for (const mov of movements) {
-  if (mov >= 0) {
-    depositFor.push(mov);
-  }
-}
-console.log(depositFor);
-
-const withdrawals = movements.filter(mov => mov < 0);
-console.log(withdrawals);
-
-const balance = movements.reduce(function (acc, cur, i, arr) {
-  console.log(`Iteration ${i}: ${acc}`);
-  return acc + cur;
-}, 0);
-console.log(balance);
-
-const balance1 = movements.reduce((acc, cur) => acc + cur, 0);
-console.log(balance1);
-
-let balance2 = 0;
-for (const mov of movements) {
-  balance2 += mov;
-}
-console.log(balance2);
-
-const max = movements.reduce((acc, mov) => {
-  if (acc > mov) {
-    return acc;
-  } else {
-    return mov;
-  }
-}, movements[0]);
-console.log(max);
-
-const calcAverageHumanAge = function (ages) {
-  const humanAges = ages.map(age => (age <= 2 ? 2 * age : 16 + age * 4));
-  const adults = humanAges.filter(age => age >= 18);
-  const average = adults.reduce((acc, cur) => acc + cur, 0) / adults.length;
-  return average;
-};
-calcAverageHumanAge([5, 2, 4, 1, 15, 8, 3]);
-calcAverageHumanAge([16, 6, 10, 5, 6, 1, 4]);
+const euroToUsd = 1.1;
+const totalDepositsUSD = movements
+  .filter(mov => mov > 0)
+  // .map(mov => mov * euroToUsd)
+  .map((mov, i, arr) => {
+    // console.log(arr);
+    return mov * euroToUsd;
+  })
+  .reduce((acc, cur) => acc + cur, 0);
+console.log(totalDepositsUSD);
