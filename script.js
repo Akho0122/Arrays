@@ -88,6 +88,33 @@ const displayMovements = function (movements) {
 };
 displayMovements(account1.movements);
 
+const calcDisplayBalance = function (movements) {
+  const balance = movements.reduce((acc, mov) => acc + mov, 0);
+  labelBalance.textContent = `${balance}€`;
+};
+calcDisplayBalance(account1.movements);
+
+const calcDisplaySummary = function (movements) {
+  const incomes = movements
+    .filter(mov => mov > 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumIn.textContent = `${incomes}€`;
+
+  const outcomes = Math.abs(
+    movements.filter(mov => mov < 0).reduce((acc, mov) => acc + mov)
+  );
+  labelSumOut.textContent = `${outcomes}€`;
+
+  const interest = movements
+    .filter(mov => mov > 0)
+    .map(deposit => (deposit * 1.2) / 100)
+    .filter((int, i, arr) => int >= 1)
+    .reduce((acc, int) => acc + int);
+  labelSumInterest.textContent = `${interest}€`;
+};
+
+calcDisplaySummary(account1.movements);
+
 const createUsername = function (accs) {
   accs.forEach(function (acc, i) {
     acc.username = acc.owner
@@ -98,23 +125,3 @@ const createUsername = function (accs) {
   });
 };
 createUsername(accounts);
-console.log(accounts);
-
-const calcDisplayBalance = function (movements) {
-  const balance = movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${balance}€`;
-};
-calcDisplayBalance(account1.movements);
-
-const calcAverageHumanAge = function (ages) {
-  const humanAges = ages.map(age => (age <= 2 ? 2 * age : 16 + age * 4));
-  const adults = humanAges.filter(human => human >= 18);
-  console.log(adults);
-  const agerageAge = adults.reduce(
-    (acc, el, i, arr) => acc + el / arr.length,
-    0
-  );
-  console.log(agerageAge);
-};
-calcAverageHumanAge([5, 2, 4, 1, 15, 8, 3]);
-calcAverageHumanAge([16, 6, 10, 5, 6, 1, 4]);
