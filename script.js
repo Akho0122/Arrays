@@ -87,9 +87,9 @@ const displayMovements = function (movements) {
   });
 };
 
-const calcDisplayBalance = function (movements) {
-  const balance = movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${balance}€`;
+const calcDisplayBalance = function (acc) {
+  acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
+  labelBalance.textContent = `${acc.balance}€`;
 };
 
 const calcDisplaySummary = function (acc) {
@@ -140,8 +140,27 @@ btnLogin.addEventListener('click', function (e) {
     // Display movements
     displayMovements(currentAccount.movements);
     // Display balance
-    calcDisplayBalance(currentAccount.movements);
+    calcDisplayBalance(currentAccount);
     // Display summary
     calcDisplaySummary(currentAccount);
+  }
+});
+
+btnTransfer.addEventListener('click', function (e) {
+  e.preventDefault();
+  const amount = Number(inputTransferAmount.value);
+  const receiverAcc = accounts.find(
+    acc => acc.username === inputTransferTo.value
+  );
+  console.log(amount, receiverAcc);
+
+  if (
+    amount > 0 &&
+    receiverAcc &&
+    currentAccount.balance >= amount &&
+    receiverAcc?.username !== currentAccount.username
+  ) {
+    currentAccount.movements.push(-amount);
+    receiverAcc.movements.push(amount);
   }
 });
