@@ -98,23 +98,23 @@ const createUsernames = function (accs) {
 };
 createUsernames(accounts);
 
-const calcDisplayBalance = function (movements) {
-  const balance = movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${balance}€`;
+const calcDisplayBalance = function (acc) {
+  acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
+  labelBalance.textContent = `${acc.balance}€`;
 };
 
 const calcDisplaySummary = function (accs) {
-  const incomes = accs
+  const incomes = accs.movements
     .filter(mov => mov > 1)
     .reduce((acc, mov) => acc + mov, 0);
   labelSumIn.textContent = `${incomes}€`;
-  const outcomes = accs
+  const outcomes = accs.movements
     .filter(mov => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
   labelSumOut.textContent = `${Math.abs(outcomes)}€`;
-  const interest = accs
+  const interest = accs.movements
     .filter(mov => mov > 0)
-    .map(deposit => (deposit * 1.2) / 100)
+    .map(deposit => (deposit * accs.interestRate) / 100)
     .filter(int => int >= 1)
     .reduce((acc, int) => acc + int, 0);
   labelSumInterest.textContent = `${interest}€`;
@@ -131,12 +131,30 @@ btnLogin.addEventListener('click', function (e) {
       currentAccount.owner.split(' ')[0]
     }`;
     containerApp.style.opacity = 100;
+    inputLoginUsername.value = inputLoginPin.value = '';
+    inputLoginPin.blur();
 
     // Display Movements
     displayMovements(currentAccount.movements);
     // Display Balance
-    calcDisplayBalance(currentAccount.movements);
+    calcDisplayBalance(currentAccount);
     // Display Summary
-    calcDisplaySummary(currentAccount.movements);
+    calcDisplaySummary(currentAccount);
+  }
+});
+
+btnTransfer.addEventListener('click', function (e) {
+  e.preventDefault();
+  const amount = Number(inputTransferAmount.value);
+  const receiverAcc = accounts.find(
+    acc => acc.username === inputTransferTo.value
+  );
+
+  if (
+    amount > 0 &&
+    receiverAcc &&
+    currentAccount.balance >= amount &&
+    receiverAcc?.username !== currentAccount.username
+  ) {
   }
 });
