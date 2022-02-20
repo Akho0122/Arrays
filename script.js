@@ -75,9 +75,12 @@ const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 ///////////////////////////////////////////////
 
-const displayMovements = function (movements) {
+const displayMovements = function (movements, sort = false) {
   containerMovements.innerHTML = '';
-  movements.forEach(function (mov, i) {
+
+  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+
+  movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
     const html = `<div class="movements__row">
     <div class="movements__type movements__type--${type}">${i + 1} ${type}</div>
@@ -192,25 +195,47 @@ btnClose.addEventListener('click', function (e) {
   }
   inputCloseUsername.value = inputClosePin.value = '';
 });
+let sorted = false;
+btnSort.addEventListener('click', function (e) {
+  e.preventDefault();
+  displayMovements(currentAccount.movements, !sorted);
+  sorted = !sorted;
+});
 
 // const arr = [[1, 2, 3], [4, 5, 6], 7, 8];
 // console.log(arr.flat());
 // const arrDeep = [[[1, 2], 3], [4, [5, 6]], 7, 8];
 // console.log(arrDeep.flat(2));
 
-const accountMovements = accounts.map(acc => acc.movements);
-const allMovements = accountMovements.flat();
-console.log(allMovements);
-// const overallBalance = allMovements.reduce((acc, mov) => acc + mov);
+// const accountMovements = accounts.map(acc => acc.movements);
+// const allMovements = accountMovements.flat();
+// console.log(allMovements);
+// // const overallBalance = allMovements.reduce((acc, mov) => acc + mov);
+// // console.log(overallBalance);
+
+// const overallBalance = accounts
+//   .map(acc => acc.movements)
+//   .flat()
+//   .reduce((acc, mov) => acc + mov, 0);
 // console.log(overallBalance);
 
-const overallBalance = accounts
-  .map(acc => acc.movements)
-  .flat()
-  .reduce((acc, mov) => acc + mov, 0);
-console.log(overallBalance);
+// const overallBalance2 = accounts
+//   .flatMap(acc => acc.movements)
+//   .reduce((acc, mov) => acc + mov, 0);
+// console.log(overallBalance2);
 
-const overallBalance2 = accounts
-  .flatMap(acc => acc.movements)
-  .reduce((acc, mov) => acc + mov, 0);
-console.log(overallBalance2);
+// const owners = ['Jonas', 'Zach', 'Adam', 'Martha'];
+// console.log(owners.sort());
+
+// console.log(movements);
+// // console.log(movements.sort());
+// movements.sort((a, b) => {
+//   if (a > b) return 1;
+//   if (b > a) return -1;
+// });
+// console.log(movements);
+
+// const arr = [5, 1, 4, 3, 2];
+// arr.sort((a, b) => a - b);
+// arr.sort((a, b) => b - a);
+// console.log(arr);
