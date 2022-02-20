@@ -239,3 +239,26 @@ btnSort.addEventListener('click', function (e) {
 // arr.sort((a, b) => a - b);
 // arr.sort((a, b) => b - a);
 // console.log(arr);
+
+// console.log([1, 3, 4, 5, 6, 7]);
+// console.log(new Array(1, 3, 4, 5, 6, 7));
+// const x = new Array(7);
+// console.log(x);
+// // console.log(x.map(() => 5));
+// x.fill(1);
+// console.log(x);
+
+// const x = Array.from(
+//   { length: 100 },
+//   (cur, i) => (i = Math.floor(Math.random() * 101))
+// );
+// console.log(x);
+
+// const movementsUI = Array.from(document.querySelectorAll('.movements__value'));
+
+const bankDepositSum = accounts
+  .map(acc => acc.movements)
+  .flat()
+  .filter(acc => acc > 0)
+  .reduce((accSum, acc) => accSum + acc, 0);
+console.log(bankDepositSum);
