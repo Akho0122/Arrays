@@ -262,3 +262,17 @@ const bankDepositSum = accounts
   .filter(acc => acc > 0)
   .reduce((accSum, acc) => accSum + acc, 0);
 console.log(bankDepositSum);
+const numDeposits1000 = accounts
+  .flatMap(acc => acc.movements)
+  .reduce((count, acc) => (acc >= 1000 ? ++count : count), 0);
+console.log(numDeposits1000);
+const sums = accounts
+  .flatMap(acc => acc.movements)
+  .reduce(
+    (sums, cur) => {
+      cur > 0 ? (sums.deposit += cur) : (sums.withdrawals += cur);
+      return sums;
+    },
+    { deposit: 0, withdrawals: 0 }
+  );
+console.log(sums);
