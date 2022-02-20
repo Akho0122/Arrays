@@ -256,38 +256,72 @@ btnSort.addEventListener('click', function (e) {
 
 // const movementsUI = Array.from(document.querySelectorAll('.movements__value'));
 
-const bankDepositSum = accounts
-  .map(acc => acc.movements)
-  .flat()
-  .filter(acc => acc > 0)
-  .reduce((accSum, acc) => accSum + acc, 0);
-console.log(bankDepositSum);
-const numDeposits1000 = accounts
-  .flatMap(acc => acc.movements)
-  .reduce((count, acc) => (acc >= 1000 ? ++count : count), 0);
-console.log(numDeposits1000);
-const sums = accounts
-  .flatMap(acc => acc.movements)
-  .reduce(
-    (sums, cur) => {
-      // cur > 0 ? (sums.deposit += cur) : (sums.withdrawals += cur);
-      sums[cur > 0 ? 'deposit' : 'withdrawals'] += cur;
-      return sums;
-    },
-    { deposit: 0, withdrawals: 0 }
-  );
-console.log(sums);
+// const bankDepositSum = accounts
+//   .map(acc => acc.movements)
+//   .flat()
+//   .filter(acc => acc > 0)
+//   .reduce((accSum, acc) => accSum + acc, 0);
+// console.log(bankDepositSum);
+// const numDeposits1000 = accounts
+//   .flatMap(acc => acc.movements)
+//   .reduce((count, acc) => (acc >= 1000 ? ++count : count), 0);
+// console.log(numDeposits1000);
+// const sums = accounts
+//   .flatMap(acc => acc.movements)
+//   .reduce(
+//     (sums, cur) => {
+//       // cur > 0 ? (sums.deposit += cur) : (sums.withdrawals += cur);
+//       sums[cur > 0 ? 'deposit' : 'withdrawals'] += cur;
+//       return sums;
+//     },
+//     { deposit: 0, withdrawals: 0 }
+//   );
+// console.log(sums);
 
-const convertTitleCase = function (title) {
-  const capitalize = str => str[0].toUpperCase() + str.slice(1);
-  const exeptions = ['a', 'and', 'an', 'the', 'but', 'or', 'on', 'in', 'with'];
-  const titleCase = title
-    .toLowerCase()
-    .split(' ')
-    .map(word => (exeptions.includes(word) ? word : capitalize(word)))
-    .join(' ');
-  return capitalize(titleCase);
-};
-console.log(convertTitleCase('this is a nice title'));
-console.log(convertTitleCase('this is a LONG title but not too long'));
-console.log(convertTitleCase('and here is another title with an EXAMPLE'));
+// const convertTitleCase = function (title) {
+//   const capitalize = str => str[0].toUpperCase() + str.slice(1);
+//   const exeptions = ['a', 'and', 'an', 'the', 'but', 'or', 'on', 'in', 'with'];
+//   const titleCase = title
+//     .toLowerCase()
+//     .split(' ')
+//     .map(word => (exeptions.includes(word) ? word : capitalize(word)))
+//     .join(' ');
+//   return capitalize(titleCase);
+// };
+// console.log(convertTitleCase('this is a nice title'));
+// console.log(convertTitleCase('this is a LONG title but not too long'));
+// console.log(convertTitleCase('and here is another title with an EXAMPLE'));
+
+const dogs = [
+  { weight: 22, curFood: 250, owners: ['Alice', 'Bob'] },
+  { weight: 8, curFood: 200, owners: ['Matilda'] },
+  { weight: 13, curFood: 275, owners: ['Sarah', 'John'] },
+  { weight: 32, curFood: 340, owners: ['Michael'] },
+];
+dogs.forEach(dog => (dog.recFood = Math.trunc(dog.weight ** 0.75 * 28)));
+
+const dogSarah = dogs.find(dog => dog.owners.includes('Sarah'));
+console.log(
+  `Sarah's dog is eating too ${
+    dogSarah.curFood > dogSarah.recFood ? 'much' : 'litte'
+  }`
+);
+const ownersEatTooMuch = dogs
+  .filter(dog => dog.curFood > dog.recFood)
+  .map(dog => dog.owners)
+  .flat();
+
+const ownersEatTooLittle = dogs
+  .filter(dog => dog.curFood < dog.recFood)
+  .map(dog => dog.owners)
+  .flat();
+
+console.log(`${ownersEatTooMuch.join(' and ')}'s dogs eat too much`);
+console.log(`${ownersEatTooLittle.join(' and ')}'s dogs eat too little`);
+
+console.log(dogs.some(dog => dog.curFood === dog.recFood));
+console.log(
+  dogs.some(
+    dog => dog.curFood > dog.recFood * 0.9 && dog.curFood < dog.recFood * 1.1
+  )
+);
