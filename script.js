@@ -73,9 +73,10 @@ const currencies = new Map([
 
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
-const displayMovements = function (movements) {
+const displayMovements = function (movements, sort = false) {
   containerMovements.innerHTML = '';
-  movements.forEach(function (mov, i) {
+  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+  movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
     const html = `<div class="movements__row">
     <div class="movements__type movements__type--${type}"> ${
@@ -119,6 +120,7 @@ const createUsernames = function (accounts) {
   });
 };
 createUsernames(accounts);
+
 const updateUI = function (acc) {
   // Display movements
   displayMovements(acc.movements);
@@ -171,6 +173,16 @@ btnTransfer.addEventListener('click', function (e) {
   }
 });
 
+btnLoan.addEventListener('click', function (e) {
+  e.preventDefault();
+  const amount = Number(inputLoanAmount.value);
+  if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
+    currentAccount.movements.push(amount);
+    updateUI(currentAccount);
+    inputLoanAmount.value = '';
+  }
+});
+
 btnClose.addEventListener('click', function (e) {
   e.preventDefault();
   if (
@@ -184,6 +196,13 @@ btnClose.addEventListener('click', function (e) {
     accounts.splice(index, 1);
     containerApp.style.opacity = 0;
   }
+});
+
+let sorted = false;
+btnSort.addEventListener('click', function (e) {
+  e.preventDefault();
+  displayMovements(currentAccount.movements, !sorted);
+  sorted = !sorted;
 });
 
 ////////////////////// ASSIGNMENT 1///////////////////////////
@@ -202,6 +221,11 @@ btnClose.addEventListener('click', function (e) {
 // checkDogs([3, 5, 2, 12, 7], [4, 1, 15, 8, 3]);
 
 ///////////////////// ARRAY METHODS ////////////////////////////
+
+// const accountMovements = accounts
+//   .flatMap(acc => acc.movements)
+//   .reduce((acc, mov) => acc + mov, 0);
+// console.log(accountMovements);
 
 // let arr = ['a', 'b', 'c', 'd', 'e'];
 // console.log(arr.slice(2));
@@ -236,3 +260,12 @@ btnClose.addEventListener('click', function (e) {
 //   console.log(humanAge);
 // };
 // calcAverageHumanAge([5, 2, 4, 1, 15, 8, 3]);
+
+// const owners = ['Jonas', 'Zach', 'Adam', 'Martha'];
+// console.log(owners.sort());
+
+// movements.sort((a, b) => {
+//   if (a > b) return 1;
+//   if (b > a) return -1;
+// });
+// console.log(movements);
